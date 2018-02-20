@@ -1,0 +1,223 @@
+\documentclass[11pt]{article}
+\marginparwidth 0.5in 
+\oddsidemargin 0.15in 
+\evensidemargin 0.25in 
+\marginparsep 0.25in
+\topmargin 0in 
+\textwidth 6in
+\textheight 8 in
+\headheight 0in
+\headsep 0in
+\parindent=15pt
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\begin{document}
+	\author{Матвей Морозов, 678 группа}
+	\title{Домашнее задание № 1.\\ Алгоритмы и модели вычислений}
+	\maketitle
+
+	\textbf {Доп. задача №1}\\
+	 Пусть $\Vert x \Vert_{*}$ и $\Vert x \Vert$ -- $2$ произвольные нормы в $R^{n}$. Верно ли, что $\Vert x \Vert_{*} = \Theta(\Vert x \Vert)$ при $x \rightarrow x_{0} \in R^{n}$?
+	 	\\
+	 	
+	 	{\itshape Решение:}
+	 	\\
+	 	 
+	 	Наш лектор по математическому анализу Максим Викторович Балашов доказывал этот факт но своих лекциях в первом семестре. 
+	 	\\
+	 	
+	 	{\href{https://mipt.ru/education/chair/mathematics/upload/0a5/balashov_mv_1.pdf}{ {\itshape Методичка М.В. Балашова за $1$-ый семестр}}} ; Эквивалентность норм в $R^n$; стр. $28$
+	 	\\
+	 	\\
+	 	
+	 	\textbf {Задача №8}
+	 	\\
+	 	Найдите $\Theta$-асимптотику последовательности $T(n) = T(\lceil \sqrt{n} \rceil) + \Theta (\log^{2}n)$
+	 		 	\\
+	 	
+	 	{\itshape Решение:}
+	 	\\
+	 	\[T(n) = T(\lceil \sqrt{n} \rceil) + \Theta (log^{2}n)\]
+	 	\begin{enumerate}
+	 		\item Сделаем замену переменных $n = 2^{k}$. Получим:
+	 		\[T(2^k) = T(\lceil 2^k \rceil) + \Theta (log^{2}2^k)\]
+	 		\[G(k) = G(\frac{k}{2}) + \Theta (log^{2}2^{k})\]
+	 		\[G(k) = G(\frac{k}{2}) + \Theta (k^2)\]
+	 		\item Построим дерево рекурсии
+	 		\begin{figure} [h!]
+	 			\centering
+	 			\includegraphics[width=0.2\linewidth]{1}
+	 		\end{figure}
+ 		\\
+ 		Глубину дерева $m$ можно оценить по формуле:
+ 		\[\frac {k}{2^m} = 1 \Rightarrow m = log_{2}k\]
+ 		\item \[k^{2} \cdot \sum_{i=0}^{\log_{2}k} \frac{1}{4^i} = \Theta(1) \cdot k^2 = \Theta(k^2) \]
+	 	\item Получим итоговый ответ:
+	 	\[T(n) = G(k) = \Theta (k^2) = \Theta (log^{2}n)\]
+	 	\end{enumerate}
+
+\textbf{Задача №4}
+\\
+	 	{\itshape Решение:}
+	 	\\
+	 	
+\textbf{a)} Найдём в виде функции от $n$ $\Theta$-асимптотику $g(n)$. 
+\begin{enumerate}
+	\item Составим для $g(n)$ реккурентное уравнение:
+	\[g(n) = g(\lfloor \frac{n}{2} \rfloor) + g(\lfloor \frac{n}{4} \rfloor) + 3 \]
+	\item При помощи теоремы Akra-Bazzi найдём $\Theta$-асимтотику $g(n)$.
+	\[(\frac{1}{2})^p +(\frac{1}{4})^p = 1\]
+	Пусть $v = (\frac{1}{2})^p$
+	\[v^2 + v - 1 = 0\]
+	$D = 5 \Rightarrow v = \frac{-1 + \sqrt{5}}{2} >0$ т.к. ищём корни больше нуля. \\
+	Получим $p = - log_{2}(\frac{-1 + \sqrt{5}}{2})$
+	\item \[g(n) = \Theta ((n^{- log_{2}(\frac{-1 + \sqrt{5}}{2})})\cdot(1+\int_{1}^{n} \frac{3}{u^{p+1}}du)) =\]
+	\[= \Theta ((n^{- log_{2}(\frac{-1 + \sqrt{5}}{2})})\cdot(1+ \frac{3}{log_{2}(\frac{-1 + \sqrt{5}}{2})} \cdot (\frac{1}{n}-1))) = \]
+	\[= \Theta (n^{- log_{2}(\frac{-1 + \sqrt{5}}{2})})\]
+\end{enumerate}
+\textbf{b)}
+\begin{enumerate}
+	\item Будем считать, что $g(0) = g(1) = 0$. Пусть $b_k = g(2^k)$. Тогда получим систему уравнений:
+	\[\begin{cases}
+		b_k = b_{k-1} + b_{k-2} + 3 \\
+		b_1 = 3 \\
+		b_0 = 0
+	\end{cases}
+	\]
+	\item Пусть $B(z) = \sum_{k=0}^{\infty} b_{k}z^{k}$
+	\[B(z) = \frac{3}{1-z} + zB(z) + z^{2}B(z)\]
+	\[B(z) =\frac{3}{(1-z)(1-z-z^2)} =\]
+	\[=3\cdot (\sum_{i=0}^{\infty} z^{i})(\sum_{j=0}^{\infty} F_{j} z^{j}) = 3 \cdot \sum_{k=0}^{\infty} (F_k + \dots + F_0)z^k\]
+	где $F_k$ -- $k$-ое число Фибоначчи
+	\item Докажем по индукции, что $F_k + \dots + F_0 = F_{k+2} -1$
+	\begin{itemize}
+		\item База индукции\\
+		$F_0 = 0; F_1 = 1$ \\
+		$F_n = F_{n-1} + F_{n-2}$\\\\
+		$F_2 = 1; F_3 = 2 \Rightarrow F_2+F_1+F_0 = F_3$ база индукции верна
+		\item Индукционный переход\\\\
+		Пусть верно для $k$. Докажем для $k+1$.\\
+		$F_{k+1} + \dots + F_{0} = F_{k+1} + F_{k} +\dots+ F_0 = F_{k+1} + F_{k+2} - 1 = F_{k+3} - 1 \\ \square$ 
+	\end{itemize}
+	\item Получим итоговый ответ $b_k = 3 \cdot (F_{k+2}-1)$
+\end{enumerate}
+
+\textbf{Задача №5}
+\\
+Оцените трудоёмкость рекурсивного алгоритма, разбивающего исходную задачу $n$ на три задачи размеров $\lceil \frac{n}{\sqrt{3}}\rceil - 5$, используя для этого $10 \frac{n^3}{\log n}$ операций.
+	 	\\
+
+{\itshape Решение:}
+\\
+
+\begin{enumerate}
+	\item Запишем рекурсивную формулу из условия задачи
+	\[T(n) = 3 T(\lceil \frac{n}{\sqrt{3}}\rceil - 5) + 10 \frac{n^3}{\log n}\]
+	\item Найдём оценку снизу
+	\[T(n) = 3 T(\lceil \frac{n}{\sqrt{3}}\rceil - 5) + 10 \frac{n^3}{\log n} > 10 \frac{n^3}{\log n}\]
+	\[T(n) > 10 \frac{n^3}{\log n}\]
+	\item Найдём оценку сверху
+	\[T(n) = 3 T(\lceil \frac{n}{\sqrt{3}}\rceil - 5) + 10 \frac{n^3}{\log n} < 3 T(\lceil \frac{n}{\sqrt{3}}\rceil) + 10 \frac{n^3}{\log n}\]
+	Так как убирая вычитаемую константу, мы увеличиваем глубину дерева вывода и значения $10 \frac{n^3}{\log n}$ в узлах дерева.
+	\\
+	\\
+	Найдём оценку сверху, используя Master Theorem.
+	\[\begin{cases}
+		a = 3; \\
+		b = \sqrt{3}\\
+		f(n) = 10 \frac{n^3}{\log n}
+	\end{cases}
+	\]
+	$f(n) = 10 \frac{n^3}{\log n} = \Omega (n^{\log_b a + \varepsilon}) = \Omega (n^{2 + \varepsilon}) = \Omega (n^{2,1})$
+	\[3\cdot 10 \cdot \frac{(\frac{n}{\sqrt{3}})^3}{\log (\frac{n}{\sqrt{3}})} < 0,9 \cdot 10 \cdot\frac{n^3}{\log n}\]
+	\item Получим итоговый ответ:
+	\[T(n) = \Theta (\frac{n^3}{\log n}) \]
+\end{enumerate}
+
+\textbf{Задача №6}
+\\
+Рассмотрим детерминированный алгоритм поиска порядковой статистики за линейное время из параграфа $9.3$ Кормена. Какая асимптотика будет у алгоритма, если:
+\begin{itemize}
+	\item Делить элементы массива на группы по три, а не по пять?
+	\\
+	
+	{\itshape Решение:}
+	\\
+\end{itemize}
+
+\textbf{Задача №3}
+	\\
+
+{\itshape Решение:}
+\\
+\begin{enumerate}
+	\item Не является оптимальным
+	\\
+	Рассмотрим события $(0,3),(2,4),(3,6),(6,9)$ \\
+	Алгоритм выберет $(2,4)$, исключит $(2,4),(3,6)$, затем выберет последний интервал $(6,9)$. \\
+	Но можно выбрать три интервала $(0,3),(3,6),(6,9)$
+	\item Не является оптимальным
+	\\
+	Рассмотрим события $(0,8),(1,3),(3,5),(5,7)$ \\
+	Алгоритм выберет событие $(0,8)$, хотя можно выбрать три события $(1,3),(3,5),(5,7)$.
+	\item Является оптимальным\\
+	Докажем от противного.\\
+	Пусть $\{a_1,\dots,a_k\}$ -- множество интервалов, выданное алгоритмом. \\
+	Пусть максимальное возможное число непересекающихся событий $n$, и этому числу соответствует выборка событий $\{b_1,\dots,b_n\}$\\\\
+	$b_1$ заканчивается не раньше $a_1$, потому что $a_1$ заканчивается раньше всех. $b_2$ начинается не раньше конца $a_1$, и заканчивается не раньше $a_2$, потому что $a_2$ заканчивается раньше всех после $a_1$. \\\\
+	Аналогично $b_i$ начинается не раньше, чем заканчивается $a_{i-1}$, и заканчивается не раньше $a_i$.
+	\\\\
+	Тогда для $k>n$ $b_{k+1}$ начинается после конца $a_k \Rightarrow$ алгоритм мог выбрать ещё хотя бы $n-k$ событий.
+\end{enumerate}
+
+\textbf{Задача №7}
+\\
+Функция натурального аргумента $S(n)$ задана рекурсией:
+	\[S(n) = \begin{cases}
+		100, n\le100\\
+		S(n-1) + S(n-3), n>100
+   \end{cases}
+    \]
+   Оцените число рекурсивных вызовов процедуры $S(\cdot)$ при вычислении $S(10^{12})$ без запоминания, так как будто вы писали и вызвали рекурсивную функции в $C++$.
+   	\\
+   
+   {\itshape Решение:}
+   \\
+   \begin{enumerate}
+   	\item Запишем функцию, вычисляющую число рекурсивных вызовова процедуры.
+   		\[T(n) = \begin{cases}
+   	1, n\le100\\
+   	T(n-1) + T(n-3), n>100
+   	\end{cases}
+   	\]
+   	Наша задача вычислить $T(10^{12})$.
+   	\item Имеем рекурентное уравнение $T_{n+3} - T_{n+2} - T_{n+1} = 1$\\\\
+   	Решим характеристическое уравнение $\lambda^3  - \lambda^2 - 1=0$  {\href{https://www.wolframalpha.com/input/?i=x%5E3+-+x%5E2+-+1%3D+0}{ {\itshape решение}}}
+   		\\\\	Получили корни:
+   				\[\begin{cases}
+x = 1,4656 \\
+x = -0,233 + 0,793i\\				
+x = -0,233 - 0,793i\\
+   	\end{cases}
+	\]
+	\item $T_k = A\cdot 1,4656^k + B \cdot (\exp(-0,233 + 0,793i)) + C \cdot \exp (-0,233 - 0,793i)$, где $A,B,C$ -- некоторые константы.
+	\item $0,233^2 + 0,793^2 < 1 \Rightarrow$ при огромных $k$ экпоненты стремятся к нулю.\\
+	Получили оценку $T_k = A\cdot 1,4656^k$
+	\item $T_k = -1$ -- частное решение.
+	   				\[\begin{cases}
+T_k = -1 + A\cdot 1,4656^k\\
+T_{100} = 1
+	\end{cases}\]
+	$1 = -1 + A\cdot 1,4656^{100} \Rightarrow A = 2 \cdot 1,456^{-100}$
+	\item Получим ответ:
+	\[T_n = -1 + 2\cdot 1,456^{n-100} \approx 2\cdot 1,456^{10^{12}-100}\]
+   \end{enumerate}
+   	
+\end{document}
